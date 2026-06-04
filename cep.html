@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Consulta de CEP</title>
+    <!-- Importando o jQuery para fazer o AJAX -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <style>
+        /* Mantendo o padrão visual das outras atividades */
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #fcf4f7; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(255, 0, 212, 0.15);
+            width: 100%;
+            max-width: 360px;
+        }
+
+        h1 { 
+            font-size: 1.6rem;
+            color: #333;
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .campo-busca {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input { 
+            width: 100%; 
+            padding: 12px; 
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            box-sizing: border-box; 
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: #ff00d4;
+            outline: none;
+        }
+
+        /* Botão Pesquisar em Rosa Choque */
+        button { 
+            padding: 12px 20px; 
+            background-color: #ff00d4; 
+            color: white; 
+            border: none; 
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer; 
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        button:hover { 
+            background-color: #cc00aa; 
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        /* Área onde os resultados vão aparecer de forma assíncrona */
+        .resultado {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #ff00d4;
+            display: none; /* Começa escondido e aparece via jQuery */
+        }
+
+        .resultado p {
+            margin: 6px 0;
+            color: #475569;
+            font-size: 0.95rem;
+        }
+
+        .resultado strong {
+            color: #1e293b;
+        }
+
+        #erro {
+            color: #dc2626;
+            font-weight: 600;
+            margin-top: 10px;
+            text-align: center;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Buscar Endereço</h1>
+
+        <div class="campo-busca">
+            <input type="text" id="cep" placeholder="Digite o CEP (ex: 01001000)" maxlength="9">
+            <button id="btnPesquisar">Pesquisar</button>
+        </div>
+
+        <!-- Mensagem de erro caso o CEP não exista -->
+        <p id="erro"></p>
+
+        <!-- Container do resultado assíncrono -->
+        <div id="resultadoContainer" class="resultado">
+            <p><strong>Rua:</strong> <span id="logradouro"></span></p>
+            <p><strong>Bairro:</strong> <span id="bairro"></span></p>
+            <p><strong>Cidade:</strong> <span id="localidade"></span></p>
+            <p><strong>Estado:</strong> <span id="uf"></span></p>
+        </div>
+    </div>
+
+    <script>
+        // Quando a página estiver pronta, ativa os eventos do jQuery
+        $(document).ready(function() {
+            
+            $('#btnPesquisar').click(function() {
+                // Pega o valor digitado no campo e limpa espaços/traços
+                var cep = $('#cep').val().replace(/\D/g, '');
+
+                // Validação simples se tem 8 números
+                if (cep.length !== 8) {
+                    $('#resultadoContainer').hide();
+                    $('#erro').text('Digite um CEP válido com 8 dígitos!').fadeIn();
+                    return;
+                }
+
+                // Esconde erros anteriores e avisa que está buscando
+                $('#erro').hide();
+                $('#btnPesquisar').text('...').prop('disabled', true);
+
+                // Fazendo a requisição AJAX assíncrona para a API ViaCEP
+                $.ajax({
+                    url: 'https://viacep.com.br/ws/' + cep + '/json/',
+                    dataType: 'json',
+                    success: function(dados) {
+                        // Se a API retornar erro: true, significa que o CEP não existe
+                        if (dados.erro) {
+                            $('#resultadoContainer').hide();
+                            $('#erro').text('CEP não encontrado!').fadeIn();
+                        } else {
+                            // Se der certo, renderiza os dados dinamicamente na página
+                            $('#logradouro').text(dados.logradouro || 'N/A');
+                            $('#bairro').text(dados.bairro || 'N/A');
+                            $('#localidade').text(dados.localidade);
+                            $('#uf').text(dados.uf);
+
+                            // Mostra a caixinha de resultados com efeito suave
+                            $('#resultadoContainer').fadeIn();
+                        }
+                    },
+                    error: function() {
+                        $('#resultadoContainer').hide();
+                        $('#erro').text('Erro ao conectar com o serviço de CEP.').fadeIn();
+                    },
+                    complete: function() {
+                        // Restaura o botão após finalizar a busca
+                        $('#btnPesquisar').text('Pesquisar').prop('disabled', false);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
