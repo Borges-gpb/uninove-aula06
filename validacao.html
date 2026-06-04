@@ -7,7 +7,7 @@
         /* Estilizando o fundo da página */
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: #f4f7f6; 
+            background-color: #fcf4f7; /* Um fundinho levemente rosado bem sutil */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -21,7 +21,7 @@
             background-color: white;
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 24px rgba(255, 0, 127, 0.1); /* Sombra de leve em rosa */
             width: 100%;
             max-width: 360px;
         }
@@ -55,29 +55,36 @@
             transition: border-color 0.3s;
         }
 
-        /* Quando o usuário clica no campo para digitar */
+        /* Quando o usuário clica no campo para digitar, a borda acende em rosa choque */
         input:focus {
-            border-color: #007bff;
+            border-color: #ff007f;
             outline: none;
         }
 
-        /* Botão estilizado */
+        /* Botão estilizado em Rosa Choque */
         button { 
             width: 100%; 
             padding: 12px; 
-            background-color: #007bff; 
+            background-color: #ff007f; /* Rosa Choque */
             color: white; 
             border: none; 
             border-radius: 8px;
             font-size: 1rem;
             font-weight: bold;
             cursor: pointer; 
-            transition: background-color 0.2s;
+            transition: background-color 0.2s, transform 0.1s;
             margin-top: 10px;
         }
 
-        /* Efeito de passar o mouse no botão */
-        button:hover { background-color: #0056b3; }
+        /* Efeito de passar o mouse (fica um rosa um pouquinho mais escuro) */
+        button:hover { 
+            background-color: #d6006b; 
+        }
+
+        /* Efeito de clique no botão */
+        button:active {
+            transform: scale(0.98);
+        }
 
         /* Mensagens de erro e sucesso estilosas */
         #erro { 
