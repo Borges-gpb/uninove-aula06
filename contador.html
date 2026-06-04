@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <title>Contador Interativo</title>
     <style>
+        /* Estilizando o fundo da página (igual ao do formulário) */
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: #f4f7f6; 
+            background-color: #fcf4f7; 
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -15,16 +16,27 @@
             margin: 0;
         }
 
+        /* Caixinha centralizada do contador */
         .container {
             background-color: white;
             padding: 40px;
             border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 24px rgba(255, 0, 212, 0.15);
             text-align: center;
+            width: 100%;
+            max-width: 320px;
         }
 
-        h2 { color: #666; margin: 0; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px; }
+        h2 { 
+            color: #555; 
+            margin: 0; 
+            font-size: 1.1rem; 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
 
+        /* O número grande do contador */
         #numero { 
             font-size: 5rem; 
             font-weight: bold; 
@@ -32,32 +44,56 @@
             transition: color 0.3s;
         }
 
+        /* Alinhando os botões lado a lado */
         .botoes {
             display: flex;
             gap: 10px;
+            justify-content: center;
         }
 
+        /* Base de estilo para todos os botões */
         button { 
-            font-size: 1rem; 
+            font-size: 0.95rem; 
             font-weight: bold;
-            padding: 12px 20px; 
+            padding: 12px 18px; 
             border: none;
             border-radius: 8px;
             cursor: pointer; 
             transition: transform 0.1s, background-color 0.2s;
+            flex: 1;
         }
 
-        #btnIncrementar { background-color: #28a745; color: white; }
-        #btnIncrementar:hover { background-color: #218838; }
+        /* Botão Diminuir: Rosa mais escuro/fechado */
+        #btnDecrementar { 
+            background-color: #b30059; 
+            color: white; 
+        }
+        #btnDecrementar:hover { 
+            background-color: #8c0046; 
+        }
 
-        #btnDecrementar { background-color: #dc3545; color: white; }
-        #btnDecrementar:hover { background-color: #c82333; }
+        /* Botão Zerar: Rosa pastel elegante */
+        #btnZerar { 
+            background-color: #ffb3d9; 
+            color: #4a0026; 
+        }
+        #btnZerar:hover { 
+            background-color: #ff99cc; 
+        }
 
-        #btnZerar { background-color: #6c757d; color: white; }
-        #btnZerar:hover { background-color: #5a6268; }
+        /* Botão Aumentar: O seu Rosa Choque Neon (#ff00d4) */
+        #btnIncrementar { 
+            background-color: #ff00d4; 
+            color: white; 
+        }
+        #btnIncrementar:hover { 
+            background-color: #cc00aa; 
+        }
 
-        /* Efeito de clique no botão */
-        button:active { transform: scale(0.95); }
+        /* Efeito de clique físico no botão */
+        button:active { 
+            transform: scale(0.95); 
+        }
     </style>
 </head>
 <body>
